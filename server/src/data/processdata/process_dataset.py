@@ -14,9 +14,11 @@ def generate_possession(
     base_possession = 50.0
     if goal_diff > 2:
         possession_shift = randint(15, 25)
-    elif 0 <= goal_diff <= 2:
+    elif 0 < goal_diff <= 2:
         possession_shift = randint(0, 15)
-    elif -2 <= goal_diff <= 0:
+    elif goal_diff == 0:
+        possession_shift = randint(-8, 10)
+    elif -2 <= goal_diff < 0:
         possession_shift = -randint(0, 15)
     else:
         possession_shift = -randint(15, 25)
