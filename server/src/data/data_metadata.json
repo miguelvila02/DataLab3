@@ -1,5 +1,8 @@
 {
-    "last_updated": "2025-11-17T18:56:04.314268",
+    "description": "Premier League games dataset",
+    "source": "kaggle",
+    "update_frequency": "none",
+    "last_updated": "2025-11-17T18:57:31.560539",
     "data_file": "raw_data.csv",
     "dataframe_shape": [
         33440,

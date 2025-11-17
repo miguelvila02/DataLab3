@@ -58,10 +58,16 @@ def dvc_push(matches_df, metadata=None):
         json.dump(metadata, f, indent=4)
 
 
+metadata = {
+    'description': 'Premier League games dataset',
+    'source': 'kaggle',
+    'update_frequency': 'none'
+}
+
 if __name__ == "__main__":
     matches_df = premier_league_matches(conn)
     save_path = Path(__file__).resolve().parent.parent / "raw_data.csv"
     save_matches(matches_df, save_path)
-    dvc_push(matches_df)
+    dvc_push(matches_df, metadata=metadata)
     print("\n\nData extraction to build model completed.")
     print("\nStarting data filtering and preprocessing...\n")
