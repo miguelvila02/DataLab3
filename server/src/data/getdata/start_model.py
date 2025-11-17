@@ -31,14 +31,18 @@ def dvc_push(matches_df, metadata=None):
     subprocess.run(["dvc", "add", "server/src/data/raw_data.csv"])
     subprocess.run(["git", "add", "server/src/data/raw_data.csv.dvc"])
     subprocess.run(['git', 'add', 'server/src/data/.gitignore'], check=True)
-    commit_message = f"Data update: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    commit_message = f"Data update: {timestamp}"
     subprocess.run(["git", "commit", "-m", commit_message])
-    subprocess.run(["dvc", "remote", "add", "-f", "myremote", "s3://mybucket/dvcstore"])
+    subprocess.run([
+        "dvc", "remote", "add", "-f",
+        "myremote", "s3://mybucket/dvcstore"
+    ])
     subprocess.run(["dvc", "push", "-r", "myremote"])
     subprocess.run(["git", "add", "server/src/data/data_metadata.json"])
     subprocess.run(["git", "commit", "-m", "Update data metadata"])
-    subprocess.run(["git", "push"]) 
-    
+    subprocess.run(["git", "push"])
+
     if metadata is None:
         metadata = {}
 
@@ -61,4 +65,3 @@ if __name__ == "__main__":
     dvc_push(matches_df)
     print("\n\nData extraction completed.")
     print("Starting data filtering and preprocessing...\n")
-
