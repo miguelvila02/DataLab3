@@ -43,7 +43,7 @@ while program_state != -1:
         if user_input == '1':
             print("Fetching upcoming matches...")
             program_state = 3
-        
+
         elif user_input == '2':
             print("Please provide your data in the required format.")
             print("Write down the last 5 games data to predict:")
@@ -114,6 +114,3 @@ while program_state != -1:
         else:
             print("Invalid input. Please try again.")
             program_state = 6
-    
-    
-
