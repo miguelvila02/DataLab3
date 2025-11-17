@@ -26,10 +26,10 @@ while program_state != -1:
     elif case == 1:
         print("Program booting... Please wait.")
         start_model = os.system(
-            'python server/src/data/getdata/start_model.py'
+            'python server/src/data/getdata/start_dataset.py'
             )
         start_model = os.system(
-            'python server/src/data/processdata/process_data.py'
+            'python server/src/data/processdata/process_dataset.py'
             )
         program_state = 2
 
