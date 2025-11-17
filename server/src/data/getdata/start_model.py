@@ -63,5 +63,5 @@ if __name__ == "__main__":
     save_path = Path(__file__).resolve().parent.parent / "raw_data.csv"
     save_matches(matches_df, save_path)
     dvc_push(matches_df)
-    print("\n\nData extraction completed.")
-    print("Starting data filtering and preprocessing...\n")
+    print("\n\nData extraction to build model completed.")
+    print("\nStarting data filtering and preprocessing...\n")
