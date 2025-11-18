@@ -45,8 +45,7 @@ while program_state != -1:
             program_state = 3
 
         elif user_input == '2':
-            print("Please provide your data in the required format.")
-            print("Write down the last 5 games data to predict:")
+            print("\n\nPlease provide your data in the required format.")
             program_state = 4
 
         elif user_input == '0':
