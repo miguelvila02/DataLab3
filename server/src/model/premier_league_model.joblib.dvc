@@ -1,5 +1,0 @@
-outs:
-- md5: 61dd8becdf7bca5f1dd94629ac0bc6a2
-  size: 156346961
-  hash: md5
-  path: premier_league_model.joblib

@@ -40,7 +40,23 @@ def save_model(model, filepath: Path):
     joblib.dump(model, filepath)
 
 
+def joblib_to_dvc(model_path: Path):
+    import subprocess
+    subprocess.run(["dvc", "add", str(model_path)])
+    subprocess.run(["git", "add", f"{model_path}.dvc"])
+    subprocess.run(['git', 'add', 'server/src/model/.gitignore'], check=True)
+    commit_message = f"Model update: {model_path.name}"
+    subprocess.run(["git", "commit", "-m", commit_message])
+    subprocess.run([
+        "dvc", "remote", "add", "-f",
+        "myremote", "s3://mybucket/dvcstore"
+    ])
+    subprocess.run(["dvc", "push", "-r", "myremote"])
+    subprocess.run(["git", "push"])
+
+
 if __name__ == "__main__":
-    model_path = Path('server/src/model/premier_league_model.joblib')
+    model_path = Path('server/src/model/match_predictor.joblib')
     save_model(model, model_path)
-    print(f"Model saved to {model_path}")
+    joblib_to_dvc(model_path)
+    print("\nYou are good to go!")
