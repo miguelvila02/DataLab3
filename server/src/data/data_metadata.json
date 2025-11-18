@@ -2,7 +2,7 @@
     "description": "Premier League games dataset",
     "source": "kaggle",
     "update_frequency": "none",
-    "last_updated": "2025-11-17T20:42:40.628150",
+    "last_updated": "2025-11-18T09:26:06.824271",
     "data_file": "raw_data.csv",
     "dataframe_shape": [
         33440,
