@@ -1,0 +1,20 @@
+{
+    "description": "Premier League games dataset",
+    "source": "kaggle",
+    "update_frequency": "none",
+    "last_updated": "2025-11-18T12:04:38.060835",
+    "data_file": "raw_data.csv",
+    "dataframe_shape": [
+        33440,
+        6
+    ],
+    "columns": [
+        "home_team_goal",
+        "away_team_goal",
+        "possession",
+        "shoton",
+        "corner",
+        "foulcommit"
+    ],
+    "row_count": 33440
+}
