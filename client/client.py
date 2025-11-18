@@ -10,7 +10,7 @@ program_state = 0
 while program_state != -1:
     case = program_state
     if case == 0:
-        print("\n\nPress 1 to get started or 0 to exit the program.")
+        print("\nPress 1 to get started or 0 to exit the program.")
         user_input = input("Choose wisely: ")
         if user_input == '1':
             program_state = 1
@@ -25,11 +25,14 @@ while program_state != -1:
 
     elif case == 1:
         print("Program booting... Please wait.")
-        start_model = os.system(
+        start_dataset = os.system(
             'python server/src/data/getdata/start_dataset.py'
             )
-        start_model = os.system(
+        process_dataset = os.system(
             'python server/src/data/processdata/process_dataset.py'
+            )
+        build_model = os.system(
+            'python server/src/model/modelbuild/predictor.py'
             )
         program_state = 2
 
