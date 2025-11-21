@@ -15,11 +15,11 @@ def generate_possession(
     if goal_diff > 2:
         possession_shift = randint(15, 25)
     elif 0 < goal_diff <= 2:
-        possession_shift = randint(0, 15)
+        possession_shift = randint(0, 20)
     elif goal_diff == 0:
-        possession_shift = randint(-8, 10)
+        possession_shift = randint(-10, 10)
     elif -2 <= goal_diff < 0:
-        possession_shift = -randint(0, 15)
+        possession_shift = -randint(0, 20)
     else:
         possession_shift = -randint(15, 25)
     home_poss = base_possession + possession_shift
@@ -35,13 +35,13 @@ def generate_shots_on_target(
     possession_diff = home_poss - away_poss
     if possession_diff > 20:
         if home_goals == 0:
-            home_shots = randint(5, 10)
+            home_shots = randint(4, 6)
         else:
-            home_shots = home_goals * randint(2, 4)
+            home_shots = home_goals * 2 + randint(2, 4)
         if away_goals == 0:
-            away_shots = randint(1, 2)
+            away_shots = randint(1, 4)
         else:
-            away_shots = away_goals * 1 + randint(0, 2)
+            away_shots = away_goals * 1 + randint(0, 4)
     elif 0 < possession_diff <= 20:
         if home_goals == 0:
             home_shots = randint(3, 6)
@@ -57,7 +57,7 @@ def generate_shots_on_target(
         else:
             home_shots = home_goals * 2 + randint(0, 3)
         if away_goals == 0:
-            away_shots = randint(3, 5)
+            away_shots = randint(3, 6)
         else:
             away_shots = away_goals * 3 + randint(0, 2)
     else:
