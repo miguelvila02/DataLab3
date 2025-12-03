@@ -8,3 +8,7 @@ Why are you dropping these columns? The target variable is the outcome of the ma
 We need to create a target variable based on the goals scored.
 For simplicity, let's define the target as 1 if home team wins, 0 for draw, and -1 for away team wins.
 
+
+Build a predictor giving data:
+-capture the data
+-send to predictor
