@@ -9,7 +9,7 @@ from datetime import datetime
 
 path = kagglehub.dataset_download("hugomathien/soccer")
 
-conn = sqlite3.connect(os.path.join(path, 'database.sqlite'))
+conn = sqlite3.connect(os.path.join(path, "database.sqlite"))
 
 
 def premier_league_matches(connection):
@@ -30,14 +30,11 @@ def save_matches(df, filepath):
 def dvc_push(matches_df, metadata=None):
     subprocess.run(["dvc", "add", "server/src/data/raw_data.csv"])
     subprocess.run(["git", "add", "server/src/data/raw_data.csv.dvc"])
-    subprocess.run(['git', 'add', 'server/src/data/.gitignore'], check=True)
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    subprocess.run(["git", "add", "server/src/data/.gitignore"], check=True)
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     commit_message = f"Data update: {timestamp}"
     subprocess.run(["git", "commit", "-m", commit_message])
-    subprocess.run([
-        "dvc", "remote", "add", "-f",
-        "myremote", "s3://mybucket/dvcstore"
-    ])
+    subprocess.run(["dvc", "remote", "add", "-f", "myremote", "s3://mybucket/dvcstore"])
     subprocess.run(["dvc", "push", "-r", "myremote"])
     subprocess.run(["git", "add", "server/src/data/data_metadata.json"])
     subprocess.run(["git", "commit", "-m", "Update data metadata"])
@@ -46,22 +43,24 @@ def dvc_push(matches_df, metadata=None):
     if metadata is None:
         metadata = {}
 
-    metadata.update({
-        "last_updated": datetime.now().isoformat(),
-        "data_file": "raw_data.csv",
-        "dataframe_shape": matches_df.shape,
-        "columns": matches_df.columns.tolist(),
-        "row_count": len(matches_df)
-    })
+    metadata.update(
+        {
+            "last_updated": datetime.now().isoformat(),
+            "data_file": "raw_data.csv",
+            "dataframe_shape": matches_df.shape,
+            "columns": matches_df.columns.tolist(),
+            "row_count": len(matches_df),
+        }
+    )
 
     with open("server/src/data/data_metadata.json", "w") as f:
         json.dump(metadata, f, indent=4)
 
 
 metadata = {
-    'description': 'Premier League games dataset',
-    'source': 'kaggle',
-    'update_frequency': 'none'
+    "description": "Premier League games dataset",
+    "source": "kaggle",
+    "update_frequency": "none",
 }
 
 if __name__ == "__main__":

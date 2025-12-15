@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.metrics import confusion_matrix
 import numpy as np
 
-dataset_path = Path('server/src/data/processed_data.csv')
+dataset_path = Path('src/server/data/processed_data.csv')
 dataset = pd.read_csv(dataset_path)
 X: pd.DataFrame = dataset.drop(
     columns=['home_team_goal', 'away_team_goal']

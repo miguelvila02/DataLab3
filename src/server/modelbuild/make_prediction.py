@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List, Dict
 
 
-def load_model(model_path: str = 'server/src/model/match_predictor.joblib'):
+def load_model(model_path: str = 'model/match_predictor.joblib'):
     """Load the trained model from joblib file"""
     return joblib.load(model_path)
 
@@ -94,7 +94,7 @@ def predict_with_custom_weights(
     home_team_last_5: List[Dict],
     away_team_last_5: List[Dict],
     weights: List[float] = None,
-    model_path: str = 'server/src/model/match_predictor.joblib'
+    model_path: str = 'model/match_predictor.joblib'
 ) -> dict:
 
     if weights is None:
