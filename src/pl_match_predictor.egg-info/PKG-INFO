@@ -1,3 +1,70 @@
+Metadata-Version: 2.4
+Name: pl-match-predictor
+Version: 0.1.0
+Summary: Premier League match outcome predictor using Machine Learning
+Home-page: https://github.com/miguelvila02/DataLab3
+Author: Miguel Vila
+Author-email: Miguel Vila <luismiguelvila@gmail.com>
+Maintainer-email: Miguel Vila <luismiguelvila@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/miguelvila02/pl-match-predictor
+Project-URL: Documentation, https://miguelvila02.github.io/pl-match-predictor
+Project-URL: Repository, https://github.com/miguelvila02/pl-match-predictor.git
+Project-URL: Bug Tracker, https://github.com/miguelvila02/pl-match-predictor/issues
+Project-URL: Changelog, https://github.com/miguelvila02/pl-match-predictor/blob/main/CHANGELOG.md
+Keywords: football,soccer,prediction,machine-learning,premier-league,sports-analytics
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: soccerdata>=1.4.0
+Requires-Dist: pandas>=1.5.0
+Requires-Dist: numpy>=1.23.0
+Requires-Dist: scikit-learn>=1.2.0
+Requires-Dist: joblib>=1.2.0
+Requires-Dist: requests>=2.28.0
+Provides-Extra: api
+Requires-Dist: fastapi>=0.95.0; extra == "api"
+Requires-Dist: uvicorn[standard]>=0.21.0; extra == "api"
+Requires-Dist: pydantic>=2.0.0; extra == "api"
+Provides-Extra: dvc
+Requires-Dist: dvc>=2.0.0; extra == "dvc"
+Requires-Dist: dvc-s3>=2.0.0; extra == "dvc"
+Provides-Extra: gui
+Requires-Dist: PyQt5>=5.15.0; extra == "gui"
+Provides-Extra: viz
+Requires-Dist: matplotlib>=3.5.0; extra == "viz"
+Requires-Dist: seaborn>=0.12.0; extra == "viz"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.2.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: pytest-mock>=3.10.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: pre-commit>=3.0.0; extra == "dev"
+Provides-Extra: docs
+Requires-Dist: mkdocs>=1.4.0; extra == "docs"
+Requires-Dist: mkdocs-material>=9.0.0; extra == "docs"
+Requires-Dist: mkdocstrings[python]>=0.20.0; extra == "docs"
+Provides-Extra: all
+Requires-Dist: pl-match-predictor[api,dev,docs,dvc,gui,viz]; extra == "all"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
 # ⚽ Premier League Match Predictor
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
