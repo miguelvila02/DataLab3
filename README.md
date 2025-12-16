@@ -46,7 +46,7 @@ pip install pl-match-predictor
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/pl-match-predictor.git
+git clone https://github.com/miguelvila02/pl-match-predictor.git
 cd pl-match-predictor
 
 # Create virtual environment
