@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # API Service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pl-predictor-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MODEL_PATH=/app/models/match_predictor.joblib
+    command: uvicorn src.server.api.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - pl-predictor-network
+  
+  # Documentation Service
+  docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pl-predictor-docs
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./docs:/app/docs
+      - ./mkdocs.yml:/app/mkdocs.yml
+    command: mkdocs serve --dev-addr 0.0.0.0:8000
+    networks:
+      - pl-predictor-network
+  
+  # Jupyter Notebook Service (optional)
+  notebook:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pl-predictor-notebook
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./src:/app/src
+      - ./data:/app/data
+    command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+    networks:
+      - pl-predictor-network
+
+networks:
+  pl-predictor-network:
+    driver: bridge
+
+volumes:
+  data-volume:
+  models-volume:

@@ -1,0 +1,193 @@
+.PHONY: help install clean test lint format run-api run-docs docker-build docker-run fetch-data train-model
+
+# Colors for output
+BLUE := \033[0;34m
+GREEN := \033[0;32m
+RED := \033[0;31m
+YELLOW := \033[0;33m
+NC := \033[0m # No Color
+
+help: ## Show this help message
+	@echo "$(BLUE)Premier League Match Predictor - Available Commands$(NC)"
+	@echo ""
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "$(GREEN)%-20s$(NC) %s\n", $$1, $$2}'
+
+# Installation
+install: ## Install package and dependencies
+	@echo "$(BLUE)Installing package...$(NC)"
+	pip install -e ".[all]"
+	@echo "$(GREEN)✓ Installation complete$(NC)"
+
+install-dev: ## Install package with dev dependencies
+	@echo "$(BLUE)Installing with dev dependencies...$(NC)"
+	pip install -e ".[all]"
+	pre-commit install
+	@echo "$(GREEN)✓ Development environment ready$(NC)"
+
+# Cleaning
+clean: ## Clean build artifacts and cache
+	@echo "$(BLUE)Cleaning...$(NC)"
+	rm -rf build/
+	rm -rf dist/
+	rm -rf *.egg-info
+	rm -rf .pytest_cache/
+	rm -rf .mypy_cache/
+	rm -rf htmlcov/
+	rm -rf .coverage
+	find . -type d -name __pycache__ -exec rm -rf {} +
+	find . -type f -name "*.pyc" -delete
+	@echo "$(GREEN)✓ Cleaned$(NC)"
+
+# Data
+fetch-data: ## Fetch training data from Premier League
+	@echo "$(BLUE)Fetching training data...$(NC)"
+	python src/server/data/getdata/fetch_real_matches.py
+	@echo "$(GREEN)✓ Data fetched$(NC)"
+
+process-data: ## Process raw data
+	@echo "$(BLUE)Processing data...$(NC)"
+	python src/server/data/processdata/process_dataset.py
+	@echo "$(GREEN)✓ Data processed$(NC)"
+
+# Model
+train-model: ## Train the prediction model
+	@echo "$(BLUE)Training model...$(NC)"
+	python src/server/model/modelbuild/predictor.py
+	@echo "$(GREEN)✓ Model trained$(NC)"
+
+evaluate-model: ## Evaluate model performance
+	@echo "$(BLUE)Evaluating model...$(NC)"
+	python src/server/model/modelbuild/model_evaluation.py
+	@echo "$(GREEN)✓ Model evaluated$(NC)"
+
+# Testing
+test: ## Run all tests
+	@echo "$(BLUE)Running tests...$(NC)"
+	pytest tests/ -v
+
+test-cov: ## Run tests with coverage
+	@echo "$(BLUE)Running tests with coverage...$(NC)"
+	pytest tests/ -v --cov=src --cov-report=html --cov-report=term-missing
+	@echo "$(GREEN)✓ Coverage report: htmlcov/index.html$(NC)"
+
+test-quick: ## Run quick tests (no slow tests)
+	@echo "$(BLUE)Running quick tests...$(NC)"
+	pytest tests/ -v -m "not slow"
+
+# Code Quality
+lint: ## Run linters
+	@echo "$(BLUE)Running linters...$(NC)"
+	flake8 src/ tests/ --max-line-length=100 --ignore=E203,W503
+	@echo "$(GREEN)✓ Linting passed$(NC)"
+
+format: ## Format code with black and isort
+	@echo "$(BLUE)Formatting code...$(NC)"
+	black src/ tests/
+	isort src/ tests/
+	@echo "$(GREEN)✓ Code formatted$(NC)"
+
+format-check: ## Check code formatting
+	@echo "$(BLUE)Checking code formatting...$(NC)"
+	black --check src/ tests/
+	isort --check-only src/ tests/
+	@echo "$(GREEN)✓ Formatting OK$(NC)"
+
+type-check: ## Run type checking
+	@echo "$(BLUE)Running type checking...$(NC)"
+	mypy src/ --ignore-missing-imports
+	@echo "$(GREEN)✓ Type checking passed$(NC)"
+
+# Running
+run-api: ## Start API server
+	@echo "$(BLUE)Starting API server...$(NC)"
+	uvicorn src.server.api.main:app --reload --host 0.0.0.0 --port 8000
+
+run-docs: ## Serve documentation
+	@echo "$(BLUE)Starting documentation server...$(NC)"
+	mkdocs serve
+
+run-gui: ## Start GUI application
+	@echo "$(BLUE)Starting GUI...$(NC)"
+	python src/app/app.py
+
+# Docker
+docker-build: ## Build Docker image
+	@echo "$(BLUE)Building Docker image...$(NC)"
+	docker build -t pl-predictor:latest .
+	@echo "$(GREEN)✓ Docker image built$(NC)"
+
+docker-run: ## Run Docker container
+	@echo "$(BLUE)Starting Docker container...$(NC)"
+	docker run -p 8000:8000 pl-predictor:latest
+
+docker-compose-up: ## Start all services with docker-compose
+	@echo "$(BLUE)Starting services...$(NC)"
+	docker-compose up -d
+	@echo "$(GREEN)✓ Services started$(NC)"
+	@echo "API: http://localhost:8000"
+	@echo "Docs: http://localhost:8001"
+
+docker-compose-down: ## Stop all services
+	@echo "$(BLUE)Stopping services...$(NC)"
+	docker-compose down
+	@echo "$(GREEN)✓ Services stopped$(NC)"
+
+docker-compose-logs: ## Show logs from all services
+	docker-compose logs -f
+
+# Documentation
+docs-build: ## Build documentation
+	@echo "$(BLUE)Building documentation...$(NC)"
+	mkdocs build
+	@echo "$(GREEN)✓ Documentation built$(NC)"
+
+docs-deploy: ## Deploy documentation to GitHub Pages
+	@echo "$(BLUE)Deploying documentation...$(NC)"
+	mkdocs gh-deploy --force
+	@echo "$(GREEN)✓ Documentation deployed$(NC)"
+
+# DVC
+dvc-init: ## Initialize DVC
+	@echo "$(BLUE)Initializing DVC...$(NC)"
+	dvc init
+	@echo "$(GREEN)✓ DVC initialized$(NC)"
+
+dvc-add-data: ## Add data to DVC
+	@echo "$(BLUE)Adding data to DVC...$(NC)"
+	dvc add src/server/data/real_training_data.csv
+	git add src/server/data/real_training_data.csv.dvc src/server/data/.gitignore
+	@echo "$(GREEN)✓ Data added to DVC$(NC)"
+
+dvc-add-model: ## Add model to DVC
+	@echo "$(BLUE)Adding model to DVC...$(NC)"
+	dvc add src/server/model/match_predictor.joblib
+	git add src/server/model/match_predictor.joblib.dvc src/server/model/.gitignore
+	@echo "$(GREEN)✓ Model added to DVC$(NC)"
+
+dvc-push: ## Push data and models to remote
+	@echo "$(BLUE)Pushing to DVC remote...$(NC)"
+	dvc push
+	@echo "$(GREEN)✓ Pushed to remote$(NC)"
+
+dvc-pull: ## Pull data and models from remote
+	@echo "$(BLUE)Pulling from DVC remote...$(NC)"
+	dvc pull
+	@echo "$(GREEN)✓ Pulled from remote$(NC)"
+
+# Complete workflows
+setup: install fetch-data train-model ## Complete setup (install, fetch data, train)
+	@echo "$(GREEN)✓ Setup complete!$(NC)"
+	@echo "Next: $(BLUE)make run-api$(NC) to start the API"
+
+pipeline: clean fetch-data process-data train-model evaluate-model test ## Run complete pipeline
+	@echo "$(GREEN)✓ Pipeline complete!$(NC)"
+
+ci: format-check lint type-check test ## Run CI checks locally
+	@echo "$(GREEN)✓ All CI checks passed!$(NC)"
+
+# Quick commands
+quick-test: format lint test-quick ## Quick check before commit
+	@echo "$(GREEN)✓ Quick check passed!$(NC)"
+
+all: clean install fetch-data train-model test ## Do everything
+	@echo "$(GREEN)✓ Everything done!$(NC)"
