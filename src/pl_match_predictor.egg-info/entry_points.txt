@@ -1,0 +1,3 @@
+[console_scripts]
+pl-fetch-data = src.server.data.getdata.fetch_real_matches:main
+pl-train = src.server.model.modelbuild.predictor:main

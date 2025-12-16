@@ -8,7 +8,8 @@ version = "0.1.0"
 description = "Premier League match outcome predictor using Machine Learning"
 readme = "README.md"
 requires-python = ">=3.8"
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE*", "COPYING*", "COPYING.LESSER*"]
 authors = [
     {name = "Miguel Vila", email = "luismiguelvila@gmail.com"}
 ]
@@ -22,7 +23,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Python Modules",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -87,12 +87,18 @@ pl-fetch-data = "src.server.data.getdata.fetch_real_matches:main"
 pl-train = "src.server.model.modelbuild.predictor:main"
 
 [tool.setuptools]
-package-dir = {"" = "."}
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
-where = ["."]
-include = ["src*"]
-namespaces = false
+where = ["src"]  # Look for packages inside the 'src' directory
+include = ["server*", "app*", "client*"]  # Explicitly include your packages
+exclude = ["tests*", "docs*", "build*", "dist*"]  # Exclude non-package directories
+
+[tool.setuptools_scm]
+# This configures automatic version detection from git tags
+write_to = "src/_version.py"
+version_scheme = "post-release"
+local_scheme = "node-and-date"
 
 [tool.black]
 line-length = 100
