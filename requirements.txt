@@ -1,30 +1,23 @@
 # Core dependencies
-soccerdata>=1.4.0,<2.0.0
 pandas>=1.5.0,<2.0.0
 numpy>=1.23.0,<1.25.0
 scikit-learn>=1.2.0,<1.4.0
 joblib>=1.2.0,<1.4.0
 
-# Data versioning
-dvc>=2.0.0,<3.0.0
-dvc-s3>=2.0.0,<3.0.0
+# Data fetching (optional - for real data)
+soccerdata>=1.4.0,<2.0.0
+requests>=2.28.0,<3.0.0
+lxml>=4.9.0,<5.0.0
+html5lib>=1.1,<2.0.0
 
-# API (optional but recommended)
+# API
 fastapi>=0.95.0,<1.0.0
 uvicorn[standard]>=0.21.0,<0.30.0
 pydantic>=2.0.0,<3.0.0
 
-# GUI (already present)
-PyQt5>=5.15.0,<6.0.0
-
-# Visualization
-matplotlib>=3.5.0,<3.8.0
-seaborn>=0.12.0,<0.13.0
-
-# Web scraping (for soccerdata)
-requests>=2.28.0,<3.0.0
-lxml>=4.9.0,<5.0.0
-html5lib>=1.1,<2.0.0
+# Dashboard
+streamlit>=1.28.0,<2.0.0
+plotly>=5.14.0,<6.0.0
 
 # Testing
 pytest>=7.2.0,<8.0.0
@@ -37,14 +30,6 @@ flake8>=6.0.0,<7.0.0
 mypy>=1.0.0,<2.0.0
 isort>=5.12.0,<6.0.0
 
-# Documentation
-mkdocs>=1.4.0,<1.6.0
-mkdocs-material>=9.0.0,<10.0.0
-mkdocstrings[python]>=0.20.0,<0.30.0
-
 # Utilities
 python-dotenv>=1.0.0,<2.0.0
 tqdm>=4.65.0,<5.0.0
-loguru>=0.6.0,<1.0.0
-jupyter>=1.0.0,<2.0.0
-jupyterlab>=4.0.0,<5.0.0

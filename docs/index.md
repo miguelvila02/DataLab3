@@ -148,7 +148,7 @@ pl-match-predictor/
 
 ## Documentation
 
-Full documentation is available at: [https://yourusername.github.io/pl-match-predictor](https://yourusername.github.io/pl-match-predictor)
+Full documentation is available at: [https://miguelvila02.github.io/pl-match-predictor](https://miguelvila02.github.io/pl-match-predictor)
 
 - [Installation Guide](getting-started/installation.md)
 - [API Reference](api/data.md)

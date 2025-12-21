@@ -1,260 +1,157 @@
-# Quick Start Guide
+# quick setup
 
-Get up and running with Premier League Match Predictor in 5 minutes!
+get this running in 5 minutes.
 
-## Prerequisites
+## what you need
 
-- Python 3.8+
+- python 3.8+
 - pip
-- Virtual environment (recommended)
+- git
 
-## 1. Installation
+## steps
+
+### 1. clone it
 
 ```bash
-# Clone repository
 git clone https://github.com/miguelvila02/pl-match-predictor.git
 cd pl-match-predictor
+```
 
-# Create virtual environment
+### 2. virtual env
+
+**windows:**
+```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install package
-pip install -e ".[all]"
+venv\Scripts\activate
 ```
 
-Or use the quick start script:
+**mac/linux:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. install stuff
 
 ```bash
-chmod +x scripts/quickstart.sh
-./scripts/quickstart.sh
+pip install -r requirements.txt
 ```
 
-## 2. Fetch Training Data
+takes a minute or two.
 
-Collect 500+ real Premier League matches:
+### 4. get data
 
 ```bash
-python src/server/data/getdata/fetch_real_matches.py
+python get_data.py
 ```
 
-This will:
-- Fetch matches from seasons 2020-2024
-- Extract possession, shots, corners, and fouls
-- Save to `src/server/data/real_training_data.csv`
+creates sample data in `data/premier_league_matches.csv`
 
-**Expected time:** 5-10 minutes
+want real data? it'll try to fetch from fbref automatically. takes longer (5-10 min).
 
-## 3. Train the Model
+### 5. train model
 
 ```bash
-python src/server/model/modelbuild/predictor.py
+python model_trainer.py
 ```
 
-This will:
-- Load training data
-- Train Random Forest classifier
-- Save model to `src/server/model/match_predictor.joblib`
-- Show accuracy metrics
+trains the random forest. saves to `models/random_forest_model.pkl`
 
-**Expected time:** 1-2 minutes
+### 6. run it
 
-## 4. Make Your First Prediction
-
-### Python API
-
-```python
-from src.server.model.modelbuild.make_prediction import predict_from_recent_form
-
-# Home team's last 5 games
-home_games = [
-    {'possession': 55.0, 'shots_on_target': 5, 'corners': 6, 'fouls': 10},
-    {'possession': 52.0, 'shots_on_target': 4, 'corners': 5, 'fouls': 11},
-    {'possession': 58.0, 'shots_on_target': 6, 'corners': 7, 'fouls': 9},
-    {'possession': 50.0, 'shots_on_target': 3, 'corners': 4, 'fouls': 12},
-    {'possession': 60.0, 'shots_on_target': 7, 'corners': 8, 'fouls': 8},
-]
-
-# Away team's last 5 games
-away_games = [
-    {'possession': 45.0, 'shots_on_target': 3, 'corners': 4, 'fouls': 13},
-    {'possession': 48.0, 'shots_on_target': 4, 'corners': 5, 'fouls': 12},
-    {'possession': 42.0, 'shots_on_target': 2, 'corners': 3, 'fouls': 15},
-    {'possession': 50.0, 'shots_on_target': 5, 'corners': 6, 'fouls': 11},
-    {'possession': 40.0, 'shots_on_target': 3, 'corners': 4, 'fouls': 14},
-]
-
-# Make prediction
-result = predict_from_recent_form(home_games, away_games)
-
-print(f"Prediction: {result['prediction']}")
-print(f"Confidence: {result['confidence']:.1f}%")
-print(f"\nProbabilities:")
-for outcome, prob in result['probabilities'].items():
-    print(f"   {outcome}: {prob*100:.1f}%")
-```
-
-### REST API
-
-Start the API server:
+#### dashboard (recommended)
 
 ```bash
-uvicorn src.server.api.main:app --reload
+streamlit run dashboard.py
 ```
 
-Visit the interactive docs: **http://localhost:8000/docs**
+browser opens at http://localhost:8501
 
-Make a request:
+#### or api
 
 ```bash
-curl -X POST "http://localhost:8000/predict" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "home_team_last_5": [
-      {"possession": 55, "shots_on_target": 5, "corners": 6, "fouls": 10},
-      {"possession": 52, "shots_on_target": 4, "corners": 5, "fouls": 11},
-      {"possession": 58, "shots_on_target": 6, "corners": 7, "fouls": 9},
-      {"possession": 50, "shots_on_target": 3, "corners": 4, "fouls": 12},
-      {"possession": 60, "shots_on_target": 7, "corners": 8, "fouls": 8}
-    ],
-    "away_team_last_5": [
-      {"possession": 45, "shots_on_target": 3, "corners": 4, "fouls": 13},
-      {"possession": 48, "shots_on_target": 4, "corners": 5, "fouls": 12},
-      {"possession": 42, "shots_on_target": 2, "corners": 3, "fouls": 15},
-      {"possession": 50, "shots_on_target": 5, "corners": 6, "fouls": 11},
-      {"possession": 40, "shots_on_target": 3, "corners": 4, "fouls": 14}
-    ]
-  }'
+uvicorn main:app --reload
 ```
 
-## 5. Run Tests
+check http://localhost:8000/docs
 
-Verify everything works:
+## using the dashboard
+
+super simple:
+
+1. open http://localhost:8501
+2. enter stats for each team (last 5 games)
+3. click predict
+4. done
+
+stats to enter:
+- possession (0-100)
+- shots on target (usually 0-10)
+- corners (usually 2-12)
+- fouls (usually 5-20)
+
+## problems?
+
+### "module not found"
+
+forgot to activate venv? or install requirements?
 
 ```bash
-pytest tests/ -v --cov=src
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-Expected output:
-```
-tests/test_api.py ✓✓✓✓✓
-tests/test_predictor.py ✓✓✓✓✓
+### "port already in use"
 
-Coverage: 85%
-```
-
-## 6. Docker (Optional)
-
-Build and run with Docker:
+try different port:
 
 ```bash
-# Build image
-docker build -t pl-predictor .
-
-# Run container
-docker run -p 8000:8000 pl-predictor
-
-# Access API
-open http://localhost:8000/docs
+streamlit run dashboard.py --server.port 8502
 ```
 
-## Common Use Cases
+### "model file not found"
 
-### Predict Multiple Matches
-
-```python
-matches = [
-    {
-        'home': 'Manchester City',
-        'away': 'Liverpool',
-        'home_games': [...],
-        'away_games': [...]
-    },
-    # ... more matches
-]
-
-for match in matches:
-    result = predict_from_recent_form(
-        match['home_games'],
-        match['away_games']
-    )
-    print(f"{match['home']} vs {match['away']}: {result['prediction']}")
-```
-
-### Weighted Prediction
-
-Give more importance to recent games:
-
-```python
-from src.server.model.modelbuild.make_prediction import predict_with_custom_weights
-
-# More weight to recent games
-weights = [0.10, 0.15, 0.20, 0.25, 0.30]
-
-result = predict_with_custom_weights(
-    home_games,
-    away_games,
-    weights=weights
-)
-```
-
-### Batch Predictions via API
-
-```python
-import requests
-
-url = "http://localhost:8000/predict"
-matches = [...]  # List of match data
-
-for match in matches:
-    response = requests.post(url, json=match)
-    prediction = response.json()
-    print(f"Prediction: {prediction['prediction']}")
-```
-
-## Next Steps
-
-- **[API Documentation](../guide/api-usage.md)** - Detailed API guide
-- **[Data Fetching](../guide/data-fetching.md)** - How to collect match data
-- **[Model Training](../api/model.md)** - Customize the model
-- **[Docker Guide](../guide/docker.md)** - Deploy with Docker
-
-## Troubleshooting
-
-### Model not found
+train it first:
 
 ```bash
-# Train the model first
-python src/server/model/modelbuild/predictor.py
+python model_trainer.py
 ```
 
-### Import errors
+### "data file not found"
+
+generate it:
 
 ```bash
-# Make sure package is installed
-pip install -e .
+python get_data.py
 ```
 
-### API won't start
+## what's where
 
-```bash
-# Install API dependencies
-pip install ".[api]"
+```
+pl-match-predictor/
+├── data/
+│   └── premier_league_matches.csv    # training data
+├── models/
+│   └── random_forest_model.pkl       # trained model
+├── get_data.py                       # data script
+├── model_trainer.py                  # training script
+├── dashboard.py                      # streamlit app
+└── main.py                          # fastapi
 ```
 
-### Data fetch fails
+## tips
 
-```bash
-# Check internet connection
-# Try alternative data source in fetch_real_matches.py
-```
+- sample data works fine for testing
+- dashboard is easier than api for one-off predictions
+- model takes ~30 seconds to train
+- default stats in forms are reasonable
 
-## Getting Help
+## next
 
-- [Full Documentation](https://miguelvila02.github.io/pl-match-predictor)
-- [Report Issues](https://github.com/miguelvila02/pl-match-predictor/issues)
-- [Discussions](https://github.com/miguelvila02/pl-match-predictor/discussions)
+play with it. try different stats. see what happens.
+
+the model isn't perfect (70% accuracy) but that's decent for football.
 
 ---
 
-**Ready to predict some matches?**
+questions? check README.md or email luismiguelvila@gmail.com
