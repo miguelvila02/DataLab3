@@ -57,8 +57,12 @@ junit/
 dmypy.json
 
 # DVC
-.dvc/cache/
-.dvc/tmp/
+# DVC
+data/*.csv
+models/*.pkl
+
+# DVC cache
+
 
 # Data files (tracked by DVC)
 *.csv
@@ -67,8 +71,6 @@ dmypy.json
 *.h5
 *.db
 *.sqlite
-!.dvc
-*.dvc
 
 # Models (tracked by DVC)
 models/*.joblib
@@ -127,3 +129,17 @@ $RECYCLE.BIN/
 
 # Docker
 .dockerignore
+
+# DVC
+.dvc/tmp/
+.dvc/cache/
+.dvc/config.local
+data/*.csv
+!data/*.csv.dvc
+models/*.pkl
+models/*.joblib
+!models/*.pkl.dvc
+!models/*.joblib.dvc
+model/*.joblib
+!model/*.joblib.dvc
+!dvc.lock
