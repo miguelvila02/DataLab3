@@ -1,5 +1,0 @@
-outs:
-- md5: 693eb27daffede03eab2bacdb79d7cbf
-  size: 562145
-  hash: md5
-  path: match_predictor.joblib

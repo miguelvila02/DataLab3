@@ -303,3 +303,18 @@ jobs:
           else
             echo "CI Pipeline Passed Successfully"
           fi
+
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    needs: [summary]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to server
+        run: |
+          scp app.tar.gz usuario@servidor:/app
+          ssh usuario@servidor "docker-compose up -d"

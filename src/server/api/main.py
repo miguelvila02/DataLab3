@@ -92,9 +92,7 @@ class GameStats(BaseModel):
         ..., ge=0, le=30, description="Number of shots on target", example=5
     )
     corners: int = Field(..., ge=0, le=20, description="Number of corners", example=6)
-    fouls: int = Field(
-        ..., ge=0, le=30, description="Number of fouls committed", example=10
-    )
+    fouls: int = Field(..., ge=0, le=30, description="Number of fouls committed", example=10)
 
     @validator("possession")
     def validate_possession(cls, v):
@@ -219,22 +217,12 @@ class WeightedPredictionRequest(PredictionRequest):
 class PredictionResponse(BaseModel):
     """Response from match prediction."""
 
-    prediction: str = Field(
-        ..., description="Predicted outcome: 'Home Win', 'Draw', or 'Away Win'"
-    )
-    prediction_code: int = Field(
-        ..., description="Numeric code: 1=Home Win, 0=Draw, -1=Away Win"
-    )
+    prediction: str = Field(..., description="Predicted outcome: 'Home Win', 'Draw', or 'Away Win'")
+    prediction_code: int = Field(..., description="Numeric code: 1=Home Win, 0=Draw, -1=Away Win")
     confidence: float = Field(..., description="Confidence level (0-100)")
-    probabilities: Dict[str, float] = Field(
-        ..., description="Probability for each outcome"
-    )
-    home_team_averages: Dict[str, float] = Field(
-        ..., description="Home team's averaged statistics"
-    )
-    away_team_averages: Dict[str, float] = Field(
-        ..., description="Away team's averaged statistics"
-    )
+    probabilities: Dict[str, float] = Field(..., description="Probability for each outcome")
+    home_team_averages: Dict[str, float] = Field(..., description="Home team's averaged statistics")
+    away_team_averages: Dict[str, float] = Field(..., description="Away team's averaged statistics")
 
     class Config:
         schema_extra = {
@@ -349,9 +337,7 @@ async def predict_match(request: PredictionRequest):
         # Make prediction
         result = predict_from_recent_form(home_games, away_games)
 
-        logger.info(
-            f"Prediction made: {result['prediction']} ({result['confidence']:.1f}%)"
-        )
+        logger.info(f"Prediction made: {result['prediction']} ({result['confidence']:.1f}%)")
 
         return PredictionResponse(**result)
 
@@ -411,9 +397,7 @@ async def predict_match_weighted(request: WeightedPredictionRequest):
         away_games = [game.dict() for game in request.away_team_last_5]
 
         # Make weighted prediction
-        result = predict_with_custom_weights(
-            home_games, away_games, weights=request.weights
-        )
+        result = predict_with_custom_weights(home_games, away_games, weights=request.weights)
 
         logger.info(
             f"Weighted prediction made: {result['prediction']} ({result['confidence']:.1f}%)"
@@ -473,7 +457,7 @@ async def general_exception_handler(request, exc):
 async def startup_event():
     """Run on API startup."""
     logger.info("Starting Premier League Match Predictor API")
-    logger.info(f"Docs available at: /docs")
+    logger.info("Docs available at: /docs")
     logger.info(f"Model loaded: {predict_from_recent_form is not None}")
 
 

@@ -78,7 +78,7 @@ pip install "pl-match-predictor[all]"
 ### 1. Fetch Training Data
 
 ```bash
-python src/server/data/getdata/fetch_real_matches.py
+python src/server/data/getdata/get_data.py
 ```
 
 This fetches 500+ real Premier League matches from 2020-2024.
@@ -86,7 +86,7 @@ This fetches 500+ real Premier League matches from 2020-2024.
 ### 2. Train Model
 
 ```bash
-python src/server/model/modelbuild/predictor.py
+python src/server/modelbuild/predictor.py
 ```
 
 ### 3. Make Predictions
