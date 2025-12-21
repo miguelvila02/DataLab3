@@ -2,13 +2,13 @@
 .gitignore
 CHANGELOG.md
 CONTRIBUTING.md
+Dockerfile
 LICENSE
 MAKEFILE
 README.md
 app.spec
 bfg-1.14.0.jar
 docker-compose.yml
-docker_compose.dockerfile
 mkdocs.yml
 pyproject.toml
 quickstart.sh
@@ -286,6 +286,8 @@ docs/getting_started/installation.md
 docs/getting_started/quickstart.md
 model/.gitignore
 model/match_predictor.joblib.dvc
+notebooks/model_analysis.ipynb
+notebooks/package_demo.ipynb
 src/__init__.py
 src/app/__init__.py
 src/app/app.py

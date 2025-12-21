@@ -1,0 +1,6 @@
+# DVC tracked files
+data/premiere_league_matches.csv
+
+# DVC internal
+.dvc/tmp/
+.dvc/cache/

@@ -1,3 +1,20 @@
-# Add patterns of files dvc should ignore, which could improve
-# the performance. Learn more at
-# https://dvc.org/doc/user-guide/dvcignore
+# Create .dvcignore file
+cat > .dvcignore << 'EOF'
+# DVC ignore patterns
+*.pyc
+__pycache__/
+*.log
+*.tmp
+.env
+*.env
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/
+
+# Git files
+.git/
+
+# DVC files (already tracked by Git)
+.dvc/tmp/
+.dvc/cache/
+EOF

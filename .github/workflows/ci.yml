@@ -30,10 +30,10 @@ jobs:
 
       - name: Install linting tools
         run: |
-          pip install black>=23.0.0,<24.0.0
-          pip install flake8>=6.0.0,<7.0.0
-          pip install isort>=5.12.0,<6.0.0
-          pip install mypy>=1.0.0,<2.0.0
+          pip install "black>=23.0.0,<24.0.0"
+          pip install "flake8>=6.0.0,<7.0.0"
+          pip install "isort>=5.12.0,<6.0.0"
+          pip install "mypy>=1.0.0,<2.0.0"
 
       - name: Run black (code formatting)
         run: black --check src/ tests/
@@ -303,3 +303,18 @@ jobs:
           else
             echo "CI Pipeline Passed Successfully"
           fi
+
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    needs: [summary]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to server
+        run: |
+          scp app.tar.gz usuario@servidor:/app
+          ssh usuario@servidor "docker-compose up -d"

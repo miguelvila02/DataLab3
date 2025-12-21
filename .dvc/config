@@ -1,4 +1,4 @@
 [core]
     remote = myremote
 ['remote "myremote"']
-    url = s3://mybucket/dvcstore
+    url = ../dvc_remote
